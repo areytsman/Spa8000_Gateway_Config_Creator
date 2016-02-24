@@ -52,6 +52,8 @@ def find_last_port_line_index(config_path, port):
         if line_found:
             return last_port_line
         else:
+            if port == '0':
+                return len(lines)
             return find(lines, str(int(port) - 1))
 
     return find(lines, port)
