@@ -1,30 +1,10 @@
-import sys
-import os
 import getopt
-# import argparse
+import os
+import sys
 
 sip_conf_path = 'sip.conf'
 output_path = 'out/'
 template_path = ''
-'''
-parser = argparse.ArgumentParser(description='E1 Gateway Config Creator')
-parser.add_argument('-t','--type')
-parser.add_argument('-p','--port')
-parser.add_argument('-P','--peer')
-parser.add_argument('-i','--ip')
-parser.add_argument('-m','--mac')
-
-args = parser.parse_args()
-
-gw_type = 'spa8000'
-port = '1'
-peer = '867233'
-ip = '192.168.75.70'
-mac = 'aabbccddee00'
-'''
-
-# output_path += '{0}{1}.txt'.format(gw_type, mac)
-# template_peer = template_path + gw_type + '-template-peer.txt'
 
 
 def find_secret(peer, sip_conf_path):
@@ -152,7 +132,8 @@ def change_port_config_from_file(config_path, file_path):
             continue
         else:
             if not user_id_found:
-                lines.insert(first_port_line + 1, 'User_ID[{}]                                      "{}" ;'.format(port, peer))
+                lines.insert(first_port_line + 1, 'User_ID[{}]               \
+                                       "{}" ;'.format(port, peer))
             if not password_found:
                 lines.insert(first_port_line + 2,
                              'Password[{}]                                     "{}" ;'.format(port, secret))
@@ -296,7 +277,6 @@ def main(argv):
 
 
 if __name__ == "__main__":
-    params = '--action=change --file=123.txt -t spa8000 -m aabbccddee00'
     main(sys.argv[1:])
+    # params = '--action=change --file=123.txt -t spa8000 -m aabbccddee00'
     # main(params.split())
-
