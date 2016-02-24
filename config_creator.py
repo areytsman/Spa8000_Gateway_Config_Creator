@@ -20,12 +20,14 @@ def find_secret(peer, sip_conf_path):
                 if line[:6] == 'secret':
                     secret = line[7:-1]
                     break
+                if line[1] == '[':
+                    break
     return secret
 
 
-def replace_value_in_quotas(string_with_quitas, new_value):
-    return string_with_quitas[:string_with_quitas.find('"') + 1] + \
-           new_value + string_with_quitas[string_with_quitas.find('"', string_with_quitas.find('"') + 1):]
+def replace_value_in_quotas(string_with_quotas, new_value):
+    return string_with_quotas[:string_with_quotas.find('"') + 1] + \
+           new_value + string_with_quotas[string_with_quotas.find('"', string_with_quotas.find('"') + 1):]
 
 
 def find_last_port_line_index(config_path, port):
@@ -74,6 +76,9 @@ def check_port_is_exist(config_path, port):
 def change_port_config(config_path, peer, port):
     lines = read_config(config_path)
     secret = find_secret(peer, sip_conf_path)
+    if secret == '':
+        print("Error! Peer {} not found in sip.conf. Nothing changed".format(peer))
+        return
     port_found = False
     user_id_found = False
     password_found = False
@@ -90,7 +95,7 @@ def change_port_config(config_path, peer, port):
                 password_found = True
                 lines[index] = replace_value_in_quotas(line, secret)
     if not port_found:
-        print("Error! Port does not exist! Nothing changed.")
+        print("Error! Port {} does not exist! Nothing changed.".format(port))
         return
     if not user_id_found:
         lines.insert(first_port_line + 1, 'User_ID[{}]                                      "{}" ;'.format(port, peer))
@@ -112,6 +117,9 @@ def change_port_config_from_file(config_path, file_path):
                 data.append((line[0], line[1]))
     for peer, port in data:
         secret = find_secret(peer, sip_conf_path)
+        if secret == '':
+            print("Error! Peer {} not found in sip.conf. Port {} not changed".format(peer, port))
+            continue
         port_found = False
         user_id_found = False
         password_found = False
@@ -160,6 +168,9 @@ def add_port_config(config_path, peer, port):
                 print("Error! Peer with this port already exists! Nothing changed.")
                 return
     secret = find_secret(peer, sip_conf_path)
+    if secret == '':
+        print("Error! Peer {} not found in sip.conf. Nothing changed".format(peer))
+        return
     with open(template_path + get_type_and_mac_from_filename(config_path)[0] + '-template-peer.txt') as temp:
         template_config = temp.read()
     template_config = template_config.replace('{@}', port)
@@ -186,6 +197,9 @@ def add_port_config_from_file(config_path, file_path):
     for peer, port in data:
         if not check_port_is_exist(config_path, port):
             secret = find_secret(peer, sip_conf_path)
+            if secret == '':
+                print("Error! Peer {} not found in sip.conf. Port {} not changed".format(peer, port))
+                continue
             port_config = template_config.replace('{@}', port)
             port_config = port_config.replace('{peer}', peer)
             port_config = port_config.replace('{secret}', secret)
@@ -227,8 +241,9 @@ def enable_disable_port(config_path, port, enable=True):
 
 
 def usage():
-    print('Usage: {} --action [addport | change | create | enable | disable] \
-    -t gwType -m mac_address [[-p port] [-P peer] | [--file file]]'.format(sys.argv[0]))
+    print(
+        'Usage: {} --action [addport | change | create | enable | disable] -t gwType -m mac_address [[-p port] [-P peer] | [--file file]]'.format(
+            sys.argv[0]))
 
 
 def get_filename_from_type_and_mac(gwtype, mac):
