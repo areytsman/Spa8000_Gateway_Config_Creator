@@ -1,3 +1,5 @@
+#!/usr/bin/python3
+
 import getopt
 import os
 import sys
@@ -152,7 +154,7 @@ def change_port_config_from_file(config_path, file_path):
 def create_config(gw_type, mac):
     with open(gw_type + '-template-config.txt') as configfile:
         conf_template = configfile.read()
-    with open(output_path+gw_type+mac + '.txt', 'w') as config:
+    with open(output_path + gw_type + '.' + mac + '.txt', 'w') as config:
         config.write(conf_template)
 
 
