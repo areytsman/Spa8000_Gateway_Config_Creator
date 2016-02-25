@@ -122,6 +122,14 @@ def change_port_config_from_file(config_path, file_path):
         for line in data_file_lines:
             if line != "":
                 line = line.split(':')
+                if len(line) != 2:
+                    print('Error! Wrong parameter file format. Nothing changed.')
+                    usage()
+                    return
+                elif not line[1].isdigit():
+                    print('Error! Wrong parameter file format. Nothing changed.')
+                    usage()
+                    return
                 data.append((line[0], line[1]))
     for peer, port in data:
         secret = find_secret(peer, sip_conf_path)
@@ -201,6 +209,14 @@ def add_port_config_from_file(config_path, file_path):
         for line in data_file_lines:
             if line != "":
                 line = line.split(':')
+                if len(line) != 2:
+                    print('Error! Wrong parameter file format. Nothing changed.')
+                    usage()
+                    return
+                elif not line[1].isdigit():
+                    print('Error! Wrong parameter file format. Nothing changed.')
+                    usage()
+                    return
                 data.append((line[0], line[1]))
     with open(template_path + get_type_and_mac_from_filename(config_path)[0] + '-template-peer.txt') as temp:
         template_config = temp.read()
@@ -253,9 +269,13 @@ def enable_disable_port(config_path, port, enable=True):
 
 
 def usage():
-    print(
-        'Usage: {} --action [addport | change | create | enable | disable] -t gwType -m mac_address [[-p port] [-P peer] | [--file file]]'.format(
-            sys.argv[0]))
+    print('Usage: {} --action [addport | change | create | enable | disable] '.format(sys.argv[0]), end='')
+    print('''-t gwType -m mac_address [[-p port] [-P peer] | [--file file]]
+\nFile format:
+peer1:port1
+peer2:port2
+...
+peerN:portN'''.format(sys.argv[0]))
 
 
 def get_filename_from_type_and_mac(gwtype, mac):
@@ -304,7 +324,7 @@ def main(argv):
 
 
 if __name__ == "__main__":
-    main(sys.argv[1:])
+    # main(sys.argv[1:])
     # For tests:
-    # params = '--action=change -t spa8000 -m aabbccddeeff -p 5 -P 2278'
-    # main(params.split())
+    params = '--action=change -t spa8000 -m aabbccddeeff --file=123.txt'
+    main(params.split())
