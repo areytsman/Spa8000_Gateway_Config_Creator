@@ -12,17 +12,40 @@ template_path = ''
 def find_secret(peer, sip_conf_path):
     secret = ''
     found = False
-    with open(sip_conf_path, encoding='utf-8') as sip_conf:
+    sip_conf = read_config(sip_conf_path)
+    template = ''
+
+    def find_secret_in_template():
+        template_secret_found = False
         for line in sip_conf:
-            if not found:
-                if len(line) >= len(peer) + 2:
-                    if line[1:len(peer) + 1] == peer:
-                        found = True
+            if not template_secret_found:
+                if '[' + template + ']' in line:
+                    template_secret_found = True
             else:
                 if line[:6] == 'secret':
-                    secret = line[7:-1]
-                    break
+                    return line[7:]
                 if line[1] == '[':
+                    return ''
+
+    for line in sip_conf:
+        if not found:
+            if len(line) >= len(peer) + 2:
+                if '[' + peer + ']' in line:
+                    found = True
+                    if len(line) > len(peer) + 2:
+                        if '(' in line and ')' in line:
+                            temp = line.split('(')
+                            temp = temp[1].split(')')
+                            template = temp[0]
+        else:
+            if line[:6] == 'secret':
+                secret = line[7:]
+                break
+            if '[' in line:
+                if template != '':
+                    secret = find_secret_in_template()
+                    break
+                else:
                     break
     return secret
 
@@ -78,13 +101,9 @@ def find_port_by_peer(config_path, peer):
 
 
 def read_config(path):
-    with open(path) as configfile:
-        config = configfile.read()
-    if config[-1] == '\r':
-        lines = config.split('\n\r')
-    else:
-        lines = config.split('\n')
-    return lines
+    with open(path, encoding='utf-8') as configfile:
+        config = configfile.read().splitlines()
+    return config
 
 
 def check_port_is_exist(config_path, port):
@@ -350,5 +369,5 @@ def main(argv):
 if __name__ == "__main__":
     # main(sys.argv[1:])
     # For tests:
-    params = '--action disable -t spa8000 -m aabbccddeeff -p 5'
+    params = '--action add -t spa8000 -m aabbccddeeff --file 124.txt'
     main(params.split())
