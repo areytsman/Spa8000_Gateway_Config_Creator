@@ -1,0 +1,241 @@
+
+# *** 
+
+Line_Enable[{@}]                                  "Yes" ;
+
+# *** Streaming Audio Server (SAS)
+
+SAS_Enable[{@}]                                   "No" ;
+SAS_DLG_Refresh_Intvl[{@}]                        "30" ;
+SAS_Inbound_RTP_Sink[{@}]                         "" ;
+
+# *** NAT Settings
+
+NAT_Mapping_Enable[{@}]                           "No" ;
+NAT_Keep_Alive_Enable[{@}]                        "No" ;
+NAT_Keep_Alive_Msg[{@}]                           "$NOTIFY" ;
+NAT_Keep_Alive_Dest[{@}]                          "$PROXY" ;
+
+# *** Network Settings
+
+SIP_ToS/DiffServ_Value[{@}]                       "0x68" ;
+SIP_CoS_Value[{@}]                                "3" ;
+RTP_ToS/DiffServ_Value[{@}]                       "0xb8" ;
+RTP_CoS_Value[{@}]                                "6" ;
+Network_Jitter_Level[{@}]                         "medium" ;  # options: low/medium/high/very high/extremely high
+Jitter_Buffer_Adjustment[{@}]                     "up and down" ;  # options: up and down/up only/down only/disable
+
+# *** SIP Settings
+
+SIP_Transport[{@}]                                "UDP" ;  # options: UDP/TCP/TLS
+SIP_Port[{@}]                                     "5060" ;
+SIP_100REL_Enable[{@}]                            "No" ;
+EXT_SIP_Port[{@}]                                 "" ;
+Auth_Resync-Reboot[{@}]                           "Yes" ;
+SIP_Proxy-Require[{@}]                            "" ;
+SIP_Remote-Party-ID[{@}]                          "Yes" ;
+SIP_GUID[{@}]                                     "No" ;
+SIP_Debug_Option[{@}]                             "none" ;  # options: none/1-line/1-line excl. OPT/1-line excl. NTFY/1-line excl. REG/1-line excl. OPT|NTFY|REG/full/full excl. OPT/full excl. NTFY/full excl. REG/full excl. OPT|NTFY|REG
+RTP_Log_Intvl[{@}]                                "0" ;
+Restrict_Source_IP[{@}]                           "No" ;
+Referor_Bye_Delay[{@}]                            "4" ;
+Refer_Target_Bye_Delay[{@}]                       "0" ;
+Referee_Bye_Delay[{@}]                            "0" ;
+Refer-To_Target_Contact[{@}]                      "No" ;
+Sticky_183[{@}]                                   "No" ;
+Auth_INVITE[{@}]                                  "No" ;
+Reply_182_On_Call_Waiting[{@}]                    "No" ;
+
+# *** Call Feature Settings
+
+Blind_Attn-Xfer_Enable[{@}]                       "No" ;
+MOH_Server[{@}]                                   "" ;
+Xfer_When_Hangup_Conf[{@}]                        "Yes" ;
+Conference_Bridge_URL[{@}]                        "" ;
+Conference_Bridge_Ports[{@}]                      "3" ;  # options: 3/4/5/6/7/8/9/10
+
+# *** Proxy and Registration
+
+Proxy[{@}]                                        "" ;
+Outbound_Proxy[{@}]                               "" ;
+Use_Outbound_Proxy[{@}]                           "No" ;
+Use_OB_Proxy_In_Dialog[{@}]                       "No" ;
+Register[{@}]                                     "Yes" ;
+Make_Call_Without_Reg[{@}]                        "Yes" ;
+Register_Expires[{@}]                             "600" ;
+Ans_Call_Without_Reg[{@}]                         "Yes" ;
+Use_DNS_SRV[{@}]                                  "Yes" ;
+DNS_SRV_Auto_Prefix[{@}]                          "Yes" ;
+Proxy_Fallback_Intvl[{@}]                         "600" ;
+Proxy_Redundancy_Method[{@}]                      "Normal" ;  # options: Normal/Based on SRV Port
+Voice_Mail_Server[{@}]                            "" ;
+Mailbox_Subscribe_Expires[{@}]                    "2147483647" ;
+
+# *** Subscriber Information
+
+Display_Name[{@}]                                 "" ;
+User_ID[{@}]                                      "{peer}" ;
+Password[{@}]                                     "{secret}" ;
+Use_Auth_ID[{@}]                                  "Yes" ;
+Auth_ID[{@}]                                      "" ;
+Mini_Certificate[{@}]                             "" ;
+SRTP_Private_Key[{@}]                             "" ;
+
+# *** Supplementary Service Subscription
+
+Call_Waiting_Serv[{@}]                            "No" ;
+Block_CID_Serv[{@}]                               "Yes" ;
+Block_ANC_Serv[{@}]                               "Yes" ;
+Dist_Ring_Serv[{@}]                               "Yes" ;
+Cfwd_All_Serv[{@}]                                "No" ;
+Cfwd_Busy_Serv[{@}]                               "No" ;
+Cfwd_No_Ans_Serv[{@}]                             "No" ;
+Cfwd_Sel_Serv[{@}]                                "No" ;
+Cfwd_Last_Serv[{@}]                               "No" ;
+Block_Last_Serv[{@}]                              "Yes" ;
+Accept_Last_Serv[{@}]                             "Yes" ;
+DND_Serv[{@}]                                     "No" ;
+CID_Serv[{@}]                                     "Yes" ;
+CWCID_Serv[{@}]                                   "Yes" ;
+Call_Return_Serv[{@}]                             "Yes" ;
+Call_Redial_Serv[{@}]                             "Yes" ;
+Call_Back_Serv[{@}]                               "Yes" ;
+Three_Way_Call_Serv[{@}]                          "Yes" ;
+Three_Way_Conf_Serv[{@}]                          "Yes" ;
+Attn_Transfer_Serv[{@}]                           "Yes" ;
+Unattn_Transfer_Serv[{@}]                         "Yes" ;
+MWI_Serv[{@}]                                     "Yes" ;
+VMWI_Serv[{@}]                                    "Yes" ;
+Speed_Dial_Serv[{@}]                              "Yes" ;
+Secure_Call_Serv[{@}]                             "Yes" ;
+Referral_Serv[{@}]                                "Yes" ;
+Feature_Dial_Serv[{@}]                            "Yes" ;
+Service_Announcement_Serv[{@}]                    "No" ;
+
+# *** Audio Configuration
+
+Preferred_Codec[{@}]                              "G711a" ;  # options: G711u/G711a/G726-16/G726-24/G726-32/G726-40/G729a/G723
+Second_Preferred_Codec[{@}]                       "Unspecified" ;  # options: Unspecified/G711u/G711a/G726-16/G726-24/G726-32/G726-40/G729a/G723
+Third_Preferred_Codec[{@}]                        "Unspecified" ;  # options: Unspecified/G711u/G711a/G726-16/G726-24/G726-32/G726-40/G729a/G723
+Use_Pref_Codec_Only[{@}]                          "No" ;
+Silence_Supp_Enable[{@}]                          "No" ;
+Silence_Threshold[{@}]                            "medium" ;  # options: high/medium/low
+G729a_Enable[{@}]                                 "Yes" ;
+Echo_Canc_Enable[{@}]                             "Yes" ;
+G723_Enable[{@}]                                  "Yes" ;
+Echo_Canc_Adapt_Enable[{@}]                       "Yes" ;
+G726-16_Enable[{@}]                               "Yes" ;
+Echo_Supp_Enable[{@}]                             "Yes" ;
+G726-24_Enable[{@}]                               "Yes" ;
+FAX_CED_Detect_Enable[{@}]                        "Yes" ;
+G726-32_Enable[{@}]                               "Yes" ;
+FAX_CNG_Detect_Enable[{@}]                        "No" ;
+G726-40_Enable[{@}]                               "Yes" ;
+FAX_Passthru_Codec[{@}]                           "G711a" ;  # options: G711u/G711a
+DTMF_Process_INFO[{@}]                            "Yes" ;
+FAX_Codec_Symmetric[{@}]                          "Yes" ;
+DTMF_Process_AVT[{@}]                             "Yes" ;
+FAX_Passthru_Method[{@}]                          "NSE" ;  # options: None/NSE/ReINVITE
+DTMF_Tx_Method[{@}]                               "INFO" ;  # options: InBand/AVT/INFO/Auto/InBand+INFO/AVT+INFO
+DTMF_Tx_Mode[{@}]                                 "Normal" ;  # options: Normal/Strict
+DTMF_Tx_Strict_Hold_Off_Time[{@}]                 "40" ;
+FAX_Process_NSE[{@}]                              "Yes" ;
+Hook_Flash_Tx_Method[{@}]                         "INFO" ;  # options: None/AVT/INFO
+FAX_Disable_ECAN[{@}]                             "No" ;
+Release_Unused_Codec[{@}]                         "Yes" ;
+FAX_Enable_T38[{@}]                               "No" ;
+FAX_T38_Redundancy[{@}]                           "1" ;  # options: 0/1/2/3
+FAX_Tone_Detect_Mode[{@}]                         "caller or callee" ;  # options: caller or callee/caller only/callee only
+
+# *** Dial Plan
+
+Dial_Plan[{@}]                                    "(0[12349]S0|0[05678]xS0|1xxxS0|[27]xxx|[2345679]xxxxxxS0|8[023456789]xxxxxxxxxS0|810xxxxxxxxxxx|*8|*3|#|*1.T|*21*xxxxxxxxxxx|*41|**)" ;
+Enable_IP_Dialing[{@}]                            "No" ;
+Emergency_Number[{@}]                             "" ;
+
+# *** FXS Port Polarity Configuration
+
+Idle_Polarity[{@}]                                "Forward" ;  # options: Forward/Reverse
+Caller_Conn_Polarity[{@}]                         "Reverse" ;  # options: Forward/Reverse
+Callee_Conn_Polarity[{@}]                         "Forward" ;  # options: Forward/Reverse
+
+# *** Call Forward Settings
+
+Cfwd_All_Dest[{@}]                              ! "" ;
+Cfwd_Busy_Dest[{@}]                             ! "" ;
+Cfwd_No_Ans_Dest[{@}]                           ! "" ;
+Cfwd_No_Ans_Delay[{@}]                          ! "20" ;
+
+# *** Selective Call Forward Settings
+
+Cfwd_Sel1_Caller[{@}]                           ! "" ;
+Cfwd_Sel1_Dest[{@}]                             ! "" ;
+Cfwd_Sel2_Caller[{@}]                           ! "" ;
+Cfwd_Sel2_Dest[{@}]                             ! "" ;
+Cfwd_Sel3_Caller[{@}]                           ! "" ;
+Cfwd_Sel3_Dest[{@}]                             ! "" ;
+Cfwd_Sel4_Caller[{@}]                           ! "" ;
+Cfwd_Sel4_Dest[{@}]                             ! "" ;
+Cfwd_Sel5_Caller[{@}]                           ! "" ;
+Cfwd_Sel5_Dest[{@}]                             ! "" ;
+Cfwd_Sel6_Caller[{@}]                           ! "" ;
+Cfwd_Sel6_Dest[{@}]                             ! "" ;
+Cfwd_Sel7_Caller[{@}]                           ! "" ;
+Cfwd_Sel7_Dest[{@}]                             ! "" ;
+Cfwd_Sel8_Caller[{@}]                           ! "" ;
+Cfwd_Sel8_Dest[{@}]                             ! "" ;
+Cfwd_Last_Caller[{@}]                           ! "" ;
+Cfwd_Last_Dest[{@}]                             ! "" ;
+Block_Last_Caller[{@}]                          ! "" ;
+Accept_Last_Caller[{@}]                         ! "" ;
+
+# *** Speed Dial Settings
+
+Speed_Dial_2[{@}]                               ! "" ;
+Speed_Dial_3[{@}]                               ! "" ;
+Speed_Dial_4[{@}]                               ! "" ;
+Speed_Dial_5[{@}]                               ! "" ;
+Speed_Dial_6[{@}]                               ! "" ;
+Speed_Dial_7[{@}]                               ! "" ;
+Speed_Dial_8[{@}]                               ! "" ;
+Speed_Dial_9[{@}]                               ! "" ;
+
+# *** Supplementary Service Settings
+
+CW_Setting[{@}]                                 ! "Yes" ;
+Block_CID_Setting[{@}]                          ! "No" ;
+Block_ANC_Setting[{@}]                          ! "No" ;
+DND_Setting[{@}]                                ! "No" ;
+CID_Setting[{@}]                                ! "Yes" ;
+CWCID_Setting[{@}]                              ! "Yes" ;
+Dist_Ring_Setting[{@}]                          ! "Yes" ;
+Secure_Call_Setting[{@}]                          "No" ;
+Message_Waiting[{@}]                            ! "No" ;
+Accept_Media_Loopback_Request[{@}]                "automatic" ;  # options: never/automatic/manual
+Media_Loopback_Mode[{@}]                          "source" ;  # options: source/mirror
+Media_Loopback_Type[{@}]                          "media" ;  # options: media/packet
+
+# *** Distinctive Ring Settings
+
+Ring1_Caller[{@}]                               ! "" ;
+Ring2_Caller[{@}]                               ! "" ;
+Ring3_Caller[{@}]                               ! "" ;
+Ring4_Caller[{@}]                               ! "" ;
+Ring5_Caller[{@}]                               ! "" ;
+Ring6_Caller[{@}]                               ! "" ;
+Ring7_Caller[{@}]                               ! "" ;
+Ring8_Caller[{@}]                               ! "" ;
+Ring9_Caller[{@}]                                 "" ;
+
+# *** Ring Settings
+
+Default_Ring[{@}]                               ! "1" ;  # options: 1/2/3/4/5/6/7/8/9
+Default_CWT[{@}]                                ! "1" ;  # options: 1/2/3/4/5/6/7/8/9
+Hold_Reminder_Ring[{@}]                         ! "8" ;  # options: 1/2/3/4/5/6/7/8/9/none
+Call_Back_Ring[{@}]                             ! "7" ;  # options: 1/2/3/4/5/6/7/8/9
+Cfwd_Ring_Splash_Len[{@}]                       ! "0" ;
+Cblk_Ring_Splash_Len[{@}]                       ! "0" ;
+VMWI_Ring_Splash_Len[{@}]                       ! "0" ;
+VMWI_Ring_Policy[{@}]                             "New VM Available" ;  # options: New VM Available/New VM Becomes Available/New VM Arrives
+Ring_On_No_New_VM[{@}]                            "No" ;
+
