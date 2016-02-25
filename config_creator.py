@@ -33,19 +33,20 @@ def replace_value_in_quotas(string_with_quotas, new_value):
 
 
 def find_last_port_line_index(config_path, port):
-    if int(port) < 1:
-        return -1
-    with open(config_path) as configfile:
-        config = configfile.read()
-    if config[-1] == '\r':
-        lines = config.split('\n\r')
-    else:
-        lines = config.split('\n')
+    lines = read_config(config_path)
 
     def find(lines, port):
+        first_port_line = 0
         last_port_line = 0
+        first_port_line_found = False
         line_found = False
         for index, line in enumerate(lines):
+            if not first_port_line_found and '[' in line:
+                if line[0] == '#':
+                    pass
+                else:
+                    first_port_line = index - 1
+                    first_port_line_found = True
             if '[' + port + ']' in line:
                 line_found = True
                 last_port_line = index
@@ -53,7 +54,10 @@ def find_last_port_line_index(config_path, port):
             return last_port_line
         else:
             if port == '0':
-                return len(lines)
+                if first_port_line_found:
+                    return first_port_line
+                else:
+                    return len(lines) - 1
             return find(lines, str(int(port) - 1))
 
     return find(lines, port)
@@ -154,6 +158,10 @@ def change_port_config_from_file(config_path, file_path):
 
 
 def create_config(gw_type, mac):
+    if os.path.exists(output_path + gw_type + '.' + mac + '.txt'):
+        print('Error! File {} is exist. Configuration does not created.'.format(
+            output_path + gw_type + '.' + mac + '.txt'))
+        return
     with open(gw_type + '-template-config.txt') as configfile:
         conf_template = configfile.read()
     with open(output_path + gw_type + '.' + mac + '.txt', 'w') as config:
@@ -297,5 +305,5 @@ def main(argv):
 
 if __name__ == "__main__":
     main(sys.argv[1:])
-    # params = '--action=change --file=123.txt -t spa8000 -m aabbccddee00'
+    # params = '--action=addport -t spa8000 -m aabbccddeeff --file=123.txt'
     # main(params.split())
