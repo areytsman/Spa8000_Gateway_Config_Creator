@@ -367,7 +367,7 @@ def main(argv):
 
 
 if __name__ == "__main__":
-    # main(sys.argv[1:])
+    main(sys.argv[1:])
     # For tests:
-    params = '--action add -t spa8000 -m aabbccddeeff --file 124.txt'
-    main(params.split())
+    # params = '--action add -t spa8000 -m aabbccddeeff --file 124.txt'
+    # main(params.split())
