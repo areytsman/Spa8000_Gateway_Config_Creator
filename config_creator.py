@@ -63,6 +63,20 @@ def find_last_port_line_index(config_path, port):
     return find(lines, port)
 
 
+def find_port_by_peer(config_path, peer):
+    lines = read_config(config_path)
+    for line in lines:
+        if 'User_ID' in line:
+            line = line.split('"')
+            if line[1] == peer:
+                temp = ""
+                for ch in line[0]:
+                    if ch.isdigit():
+                        temp += ch
+                return temp
+    return '-1'
+
+
 def read_config(path):
     with open(path) as configfile:
         config = configfile.read()
@@ -313,9 +327,9 @@ def main(argv):
         elif options['--action'] == 'create':
             create_config(options['-t'], options['-m'])
         elif options['--action'] == 'enable':
-            enable_disable_port(config_path, options['-P'], True)
+            enable_disable_port(config_path, options['-p'], True)
         elif options['--action'] == 'disable':
-            enable_disable_port(config_path, options['-P'], False)
+            enable_disable_port(config_path, options['-p'], False)
     except KeyError as err:
         print('Argument {} is missing'.format(err))
         usage()
@@ -326,5 +340,5 @@ def main(argv):
 if __name__ == "__main__":
     # main(sys.argv[1:])
     # For tests:
-    params = '--action=change -t spa8000 -m aabbccddeeff --file=123.txt'
+    params = '--action disable -t spa8000 -m aabbccddeeff -p 5'
     main(params.split())
