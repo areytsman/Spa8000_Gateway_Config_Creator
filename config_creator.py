@@ -314,7 +314,7 @@ def main(argv):
         options[option] = arg
     try:
         config_path = get_filename_from_type_and_mac(options['-t'], options['-m'])
-        if options['--action'] == 'addport':
+        if options['--action'] == 'add':
             if '--file' in options.keys():
                 add_port_config_from_file(config_path, options['--file'])
             else:
@@ -327,9 +327,19 @@ def main(argv):
         elif options['--action'] == 'create':
             create_config(options['-t'], options['-m'])
         elif options['--action'] == 'enable':
-            enable_disable_port(config_path, options['-p'], True)
+            if '-p' in options.keys():
+                enable_disable_port(config_path, options['-p'], True)
+            elif '-P' in options.keys():
+                enable_disable_port(config_path, find_port_by_peer(config_path, options['-P']), True)
+            else:
+                raise KeyError('Key -p or -P not found.')
         elif options['--action'] == 'disable':
-            enable_disable_port(config_path, options['-p'], False)
+            if '-p' in options.keys():
+                enable_disable_port(config_path, options['-p'], False)
+            elif '-P' in options.keys():
+                enable_disable_port(config_path, find_port_by_peer(config_path, options['-P']), False)
+            else:
+                raise KeyError('Key -p or -P not found.')
     except KeyError as err:
         print('Argument {} is missing'.format(err))
         usage()
