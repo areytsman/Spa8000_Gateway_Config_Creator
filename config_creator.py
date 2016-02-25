@@ -305,5 +305,6 @@ def main(argv):
 
 if __name__ == "__main__":
     main(sys.argv[1:])
-    # params = '--action=addport -t spa8000 -m aabbccddeeff --file=123.txt'
+    # For tests:
+    # params = '--action=change -t spa8000 -m aabbccddeeff -p 5 -P 2278'
     # main(params.split())
