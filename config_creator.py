@@ -12,17 +12,40 @@ template_path = ''
 def find_secret(peer, sip_conf_path):
     secret = ''
     found = False
-    with open(sip_conf_path, encoding='utf-8') as sip_conf:
+    sip_conf = read_config(sip_conf_path)
+    template = ''
+
+    def find_secret_in_template():
+        template_secret_found = False
         for line in sip_conf:
-            if not found:
-                if len(line) >= len(peer) + 2:
-                    if line[1:len(peer) + 1] == peer:
-                        found = True
+            if not template_secret_found:
+                if '[' + template + ']' in line:
+                    template_secret_found = True
             else:
                 if line[:6] == 'secret':
-                    secret = line[7:-1]
-                    break
+                    return line[7:]
                 if line[1] == '[':
+                    return ''
+
+    for line in sip_conf:
+        if not found:
+            if len(line) >= len(peer) + 2:
+                if '[' + peer + ']' in line:
+                    found = True
+                    if len(line) > len(peer) + 2:
+                        if '(' in line and ')' in line:
+                            temp = line.split('(')
+                            temp = temp[1].split(')')
+                            template = temp[0]
+        else:
+            if line[:6] == 'secret':
+                secret = line[7:]
+                break
+            if '[' in line:
+                if template != '':
+                    secret = find_secret_in_template()
+                    break
+                else:
                     break
     return secret
 
@@ -63,14 +86,24 @@ def find_last_port_line_index(config_path, port):
     return find(lines, port)
 
 
+def find_port_by_peer(config_path, peer):
+    lines = read_config(config_path)
+    for line in lines:
+        if 'User_ID' in line:
+            line = line.split('"')
+            if line[1] == peer:
+                temp = ""
+                for ch in line[0]:
+                    if ch.isdigit():
+                        temp += ch
+                return temp
+    return '-1'
+
+
 def read_config(path):
-    with open(path) as configfile:
-        config = configfile.read()
-    if config[-1] == '\r':
-        lines = config.split('\n\r')
-    else:
-        lines = config.split('\n')
-    return lines
+    with open(path, encoding='utf-8') as configfile:
+        config = configfile.read().splitlines()
+    return config
 
 
 def check_port_is_exist(config_path, port):
@@ -300,7 +333,7 @@ def main(argv):
         options[option] = arg
     try:
         config_path = get_filename_from_type_and_mac(options['-t'], options['-m'])
-        if options['--action'] == 'addport':
+        if options['--action'] == 'add':
             if '--file' in options.keys():
                 add_port_config_from_file(config_path, options['--file'])
             else:
@@ -313,9 +346,19 @@ def main(argv):
         elif options['--action'] == 'create':
             create_config(options['-t'], options['-m'])
         elif options['--action'] == 'enable':
-            enable_disable_port(config_path, options['-P'], True)
+            if '-p' in options.keys():
+                enable_disable_port(config_path, options['-p'], True)
+            elif '-P' in options.keys():
+                enable_disable_port(config_path, find_port_by_peer(config_path, options['-P']), True)
+            else:
+                raise KeyError('Key -p or -P not found.')
         elif options['--action'] == 'disable':
-            enable_disable_port(config_path, options['-P'], False)
+            if '-p' in options.keys():
+                enable_disable_port(config_path, options['-p'], False)
+            elif '-P' in options.keys():
+                enable_disable_port(config_path, find_port_by_peer(config_path, options['-P']), False)
+            else:
+                raise KeyError('Key -p or -P not found.')
     except KeyError as err:
         print('Argument {} is missing'.format(err))
         usage()
@@ -324,7 +367,7 @@ def main(argv):
 
 
 if __name__ == "__main__":
-    # main(sys.argv[1:])
+    main(sys.argv[1:])
     # For tests:
-    params = '--action=change -t spa8000 -m aabbccddeeff --file=123.txt'
-    main(params.split())
+    # params = '--action add -t spa8000 -m aabbccddeeff --file 124.txt'
+    # main(params.split())
